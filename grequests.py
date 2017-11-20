@@ -113,7 +113,7 @@ def map(requests, stream=False, size=None, exception_handler=None, gtimeout=None
     requests = list(requests)
 
     pool = Pool(size) if size else None
-    jobs = [send(r, pool, stream=stream) for r in requests]
+    jobs = [send(r, pool, stream=r.kwargs.get('stream') if r.kwargs.get('stream') else stream) for r in requests]
     gevent.joinall(jobs, timeout=gtimeout)
 
     ret = []
